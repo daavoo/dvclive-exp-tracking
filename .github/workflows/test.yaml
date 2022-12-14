@@ -1,0 +1,35 @@
+name: Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  tests:
+    timeout-minutes: 30
+    runs-on: windows-latest
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python ${{ matrix.pyv }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.pyv }}
+
+      - name: Install
+        run: |
+          pip install -r requirements.txt
+      - name: Train
+        run: |
+          python train.py
+      - name: DVCYAML
+        run: |
+          cat dvclive/dvc.yaml
+      - name: Plots show
+        run: |
+          dvc plots show --json
