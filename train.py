@@ -44,3 +44,6 @@ train_loader = utils.data.DataLoader(dataset)
 autoencoder = LitAutoEncoder(encoder_size=64)
 trainer = pl.Trainer(limit_train_batches=100, max_epochs=5, logger=DVCLiveLogger(save_dvc_exp=True))
 trainer.fit(model=autoencoder, train_dataloaders=train_loader)
+
+from dvclive.serialize import dump_yaml
+dump_yaml({"plots": ["dvclive/metrics"]}, "dvclive/dvc.yaml")
